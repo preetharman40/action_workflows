@@ -14,6 +14,7 @@ jobs:
 
     outputs:
       version: ${{ steps.version_cal.outputs.version_tag }}
+      image: ${{ steps.image.outputs.image}}
 
     steps:
       - uses: actions/checkout@v4

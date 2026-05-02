@@ -1,0 +1,41 @@
+name: Dev to Prod
+
+on:
+  push:
+    branches: [main]
+
+  pull_requests:
+    branches: [main]
+
+jobs:
+  development:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+
+  tagging:
+    runs-on: ubuntu-latest
+    needs: development
+    steps:
+      - name: Checkout Code
+        uses: actions@checkout@v4
+
+      - name: Login into Digial Ocean Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Pull, Retag and Push Image
+        run: |
+
+          SOURCE_IMAGE = "${{ secrets.REGISTRY }}/${{ secrets.IMAGE_NAME }}:latest"
+          new_tag = Prod-v1.0.1
+          echo "Pulling image from $SOURCE_IMAGE"
+
+
+
+
+
+  

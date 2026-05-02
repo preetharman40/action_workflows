@@ -20,7 +20,7 @@ jobs:
       - name: Login into Digital Ocean
         uses: docker/login-action@v3
         with:
-          registry: registry.digitalocean.com
+          registry: registry.digitalOcean.com
           username: ${{ secrets.DIGITALOCEAN_TOKEN }}
           password: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
@@ -40,7 +40,7 @@ jobs:
       - name: Build and Push Docker image
         run: |
           
-          echo "Bulding and Push image to Digital OCean"
+          echo "Bulding and Push image to Digital Ocean"
 
           docker build -t ${{ steps.image.outputs.image}} .
           docker push ${{ steps.image.outputs.image}}

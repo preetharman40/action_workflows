@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      image: ${{ steps.image.outputs.image }}
+      version: ${{ steps.version_cal.outputs.version_tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +36,8 @@ jobs:
         id: image
         run: |
           IMAGE="${{ secrets.REGISTRY }}/${{ secrets.IMAGE_NAME }}:${{ steps.version_cal.outputs.version_tag }}"
-          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+          VERSION="${{ steps.version_cal.outputs.version_tag }}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
         
       - name: Build and Push Docker image
         run: |
@@ -64,7 +65,8 @@ jobs:
         id: docker_step
         run: |
           
-          IMAGE="${{ needs.Build_and_Push.outputs.image }}"
+          VERSION="${{ needs.Build_and_Push.outputs.version }}"
+          IMAGE="${{ secrets.REGISTRY }}/${{ secrets.IMAGE_NAME }}:$VERSION"
 
           echo "Pull Docker image from DO"
           docker pull $IMAGE

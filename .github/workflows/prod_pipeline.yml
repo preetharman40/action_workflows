@@ -26,7 +26,7 @@ jobs:
 
       - name: Assign version
         id: version_cal
-        uses: paulhatch/semantic-version@6.0.2
+        uses: paulhatch/semantic-version@v5.4.0
         with:
           tag_prefix: "v"
           fetch-depth: 0

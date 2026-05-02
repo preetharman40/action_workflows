@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      image: ${{ steps.image.outputs.image}}
+      image: ${{ steps.image.outputs.image }}
 
     steps:
       - uses: actions/checkout@v4

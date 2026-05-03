@@ -38,7 +38,7 @@ jobs:
       - name: Set Image Name
         id: image
         run: |
-          IMAGE="${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}:${{ steps.version_cal.outputs.version_tag }}"
+          IMAGE="${{ vars.REGISTRY }}/${{ vars.IMAGE_NAME }}"
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
         
       - name: Build and Push Docker image
@@ -46,8 +46,8 @@ jobs:
           
           echo "Bulding and Push image to Digital Ocean"
 
-          docker build -t ${{ steps.image.outputs.image}} .
-          docker push ${{ steps.image.outputs.image}}
+          docker build -t ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }} .
+          docker push ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }}
 
   Deploy_Development:
     name: Deploy Development
@@ -67,7 +67,7 @@ jobs:
         id: docker_step
         run: |
           
-          IMAGE="${{ needs.Build_and_Push.outputs.image }}"
+          IMAGE="${{ needs.Build_and_Push.outputs.image }}:${{ needs.Build_and_Push.outputs.version }}"
 
           echo "Pull Docker image from DO"
           docker pull $IMAGE
@@ -83,7 +83,8 @@ jobs:
     #   - name: Latest Tag
     #     run: |
          
-    #       IMAGE
+    #       IMAGE="${{ needs.Build_and_Push.outputs.image }}"
+    #       VERSION="${{ needs.Build_and_Push.outputs.version }}"
 
           
 

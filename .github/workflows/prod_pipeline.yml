@@ -86,8 +86,8 @@ jobs:
           VERSION="${{ needs.Build_and_Push.outputs.version }}"
           VERSIONED_IMAGE="${{ needs.Build_and_Push.outputs.image }}:${{ needs.Build_and_Push.outputs.version }}"
 
-        #   echo "Pull Docker image from DO"
-        #   docker pull $IMAGE:$VERSIONs
+          #echo "Pull Docker image from DO"
+          #docker pull $IMAGE:$VERSIONs
           docker pull $VERSIONED_IMAGE
 
           echo "Adding latest tag to the image"

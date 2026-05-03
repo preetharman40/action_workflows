@@ -79,7 +79,7 @@ jobs:
       - name: Success Message
         if: steps.docker_step.outcome == 'success'
         run: echo "Application deployed Successfully!"
-
+        
       - name: Latest Tag
         run: |
          

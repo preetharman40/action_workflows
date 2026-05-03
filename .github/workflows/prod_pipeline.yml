@@ -8,6 +8,25 @@ on:
 
 
 jobs:
+  Auto_Tag:
+    name: Auto tag on Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+            fetch-depth: 0
+        
+      - name: Bump Version and push tag
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+
+
   Build_and_Push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
@@ -33,6 +52,7 @@ jobs:
         uses: paulhatch/semantic-version@v5.4.0
         with:
           tag_prefix: "v"
+          version_format: "${major}.${minor}.${patch}"
           
 
       - name: Set Image Name

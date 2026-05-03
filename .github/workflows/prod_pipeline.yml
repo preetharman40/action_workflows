@@ -78,20 +78,22 @@ jobs:
 
       - name: Success Message
         if: steps.docker_step.outcome == 'success'
-        run: | 
+        run: |
+
           echo "Application deployed Successfully!"
 
           IMAGE="${{ needs.Build_and_Push.outputs.image }}"
           VERSION="${{ needs.Build_and_Push.outputs.version }}"
-          IMAGE_ID=$(docker inspect --format='{{.Id}}' $IMAGE:$VERSION)
+          VERSIONED_IMAGE="${{ needs.Build_and_Push.outputs.image }}:${{ needs.Build_and_Push.outputs.version }}"
 
         #   echo "Pull Docker image from DO"
-        #   docker pull $IMAGE:$VERSION
+        #   docker pull $IMAGE:$VERSIONs
+          docker pull $VERSIONED_IMAGE
 
           echo "Adding latest tag to the image"
-          docker tag $IMAGE_ID $IMAGE:latest
+          docker tag $VERSIONED_IMAGE "$IMAGE:latest"
 
-          docker push $IMAGE:latest
+          docker push "$IMAGE:latest"
 
 
 

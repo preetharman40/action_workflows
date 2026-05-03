@@ -14,9 +14,12 @@ jobs:
 
     outputs:
       image: ${{ steps.image.outputs.image }}
+      version: ${{ steps.version_cal.outputs.version_tag }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Login into Digital Ocean
         uses: docker/login-action@v3
@@ -30,7 +33,7 @@ jobs:
         uses: paulhatch/semantic-version@v5.4.0
         with:
           tag_prefix: "v"
-          fetch-depth: 0
+          
 
       - name: Set Image Name
         id: image
@@ -76,6 +79,14 @@ jobs:
       - name: Success Message
         if: steps.docker_step.outcome == 'success'
         run: echo "Application deployed Successfully!"
+
+    #   - name: Latest Tag
+    #     run: |
+         
+    #       IMAGE
+
+          
+
 
           
 

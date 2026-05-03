@@ -64,7 +64,7 @@ jobs:
       - name: Build and Push Docker image
         run: |
           
-          echo "Bulding and Push image to Digital Ocean"
+          echo "Build and Push image to Digital Ocean"
 
           docker build -t ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }} .
           docker push ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }}

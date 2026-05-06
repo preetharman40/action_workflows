@@ -1,5 +1,5 @@
 #name: Dev to Prod
-#corected Auto_TAG
+#seems fixed latest tag moving to deployed version
 
 name: Deploy to Development
 
@@ -75,7 +75,7 @@ jobs:
 
           docker build --label "org.opencontainers.image.revision=${{ github.sha }}" \
           --label "org.opencontainers.image.run_number=${{ github.run_number }}" -t ${{ steps.image.outputs.image}}:${{ needs.Auto_Tag.outputs.version }} .
-          
+
           docker push ${{ steps.image.outputs.image}}:${{ needs.Auto_Tag.outputs.version }}
 
   Deploy_Development:

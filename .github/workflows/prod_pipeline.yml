@@ -29,6 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+          WITH_V: true
 
 
 
@@ -39,7 +40,7 @@ jobs:
 
     outputs:
       image: ${{ steps.image.outputs.image }}
-      version: ${{ needs.Auto_tag.outputs.version }}
+      version: ${{ needs.Auto_Tag.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -72,8 +73,8 @@ jobs:
           
           echo "Build and Push image to Digital Ocean"
 
-          docker build -t ${{ steps.image.outputs.image}}:${{ needs.Auto_tag.outputs.version }} .
-          docker push ${{ steps.image.outputs.image}}:${{ needs.Auto_tag.outputs.version }}
+          docker build -t ${{ steps.image.outputs.image}}:${{ needs.Auto_Tag.outputs.version }} .
+          docker push ${{ steps.image.outputs.image}}:${{ needs.Auto_Tag.outputs.version }}
 
   Deploy_Development:
     name: Deploy Development

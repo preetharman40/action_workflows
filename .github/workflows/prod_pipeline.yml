@@ -14,12 +14,16 @@ jobs:
     permissions:
       contents: write
 
+    outputs:
+      version: ${{ steps.tag.outputs.new_tag }}
+
     steps:
       - uses: actions/checkout@v4
         with:
             fetch-depth: 0
         
       - name: Bump Version and push tag
+        id: tag
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,11 +33,12 @@ jobs:
 
   Build_and_Push:
     name: Build and Push Docker Image
+    needs: Auto_Tag
     runs-on: ubuntu-latest
 
     outputs:
       image: ${{ steps.image.outputs.image }}
-      version: ${{ steps.version_cal.outputs.version_tag }}
+      version: ${{ needs.Auto_tag.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -47,12 +52,12 @@ jobs:
           username: ${{ secrets.DIGITALOCEAN_TOKEN }}
           password: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - name: Assign version
-        id: version_cal
-        uses: paulhatch/semantic-version@v5.4.0
-        with:
-          tag_prefix: "v"
-          version_format: "${major}.${minor}.${patch}"
+      # - name: Assign version
+      #   id: version_cal
+      #   uses: paulhatch/semantic-version@v5.4.0
+      #   with:
+      #     tag_prefix: "v"
+      #     version_format: "${major}.${minor}.${patch}"
           
 
       - name: Set Image Name
@@ -66,8 +71,8 @@ jobs:
           
           echo "Build and Push image to Digital Ocean"
 
-          docker build -t ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }} .
-          docker push ${{ steps.image.outputs.image}}:${{ steps.version_cal.outputs.version_tag }}
+          docker build -t ${{ steps.image.outputs.image}}:${{ needs.Auto_tag.outputs.version }} .
+          docker push ${{ steps.image.outputs.image}}:${{ needs.Auto_tag.outputs.version }}
 
   Deploy_Development:
     name: Deploy Development
